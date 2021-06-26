@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 	{% load static %}
+  {% load plotly_dash %}
 	<head>
 		<meta charset="UTF-8" />
 		<title>Dindex</title>
@@ -79,7 +80,7 @@
 											class="store"
 											href="javascript:void(0)"
 											><img
-												src="{% static 'img/store.svg"
+												src="{% static 'img/store.svg' %}"
 												alt=""
 											/><span>App store</span></a
 										>
@@ -89,7 +90,7 @@
 											class="google"
 											href="javascript:void(0)"
 											><img
-												src="{% static 'img/google.svg"
+												src="{% static 'img/google.svg' %}"
 												alt=""
 											/><span>Google play</span></a
 										>
@@ -282,10 +283,17 @@
 					<div class="title">
 						<h2>Статистика <i>индексов</i></h2>
 					</div>
-					<div class="table-content">
+          <div class="statistics-content">
+						<!-- <img src="{% static 'img/grafic.svg' %}" alt="" style="width: 100%; margin-top: 90px;">s -->
+						<canvas
+							id="myChart"
+							style="width: 100%; margin-top: 90px;margin-bottom: 90px;"
+						></canvas>
+            {% comment %} {{ plot | safe }} {% endcomment %}
+					</div>
+					<div class="table-content"  style=" margin-top: 300px;">
 						<div class="table">
 							<table>
-								\
 								<tr>
 									<th>Data</th>
 									<th>Id</th>
@@ -326,13 +334,7 @@
 						</ul>
 						{% endif %}
 					</div>
-					<div class="statistics-content">
-						<!-- <img src="{% static 'img/grafic.svg' %}" alt="" style="width: 100%; margin-top: 90px;">s -->
-						<canvas
-							id="myChart"
-							style="width: 100%; margin-top: 90px"
-						></canvas>
-					</div>
+					
 				</div>
 			</section>
 
@@ -725,6 +727,7 @@
 						],
 					},
 					options: {
+            responsive: true,
 						animation: {
 							onComplete: () => {
 								delayed = true;
@@ -745,13 +748,11 @@
 						},
 						scales: {
 							y: {
-								stacked: true,
 								beginAtZero: false,
 								display: true,
 								text: "Value",
 							},
 							x: {
-								stacked: true,
 								beginAtZero: false,
 								display: true,
 								text: "Time",

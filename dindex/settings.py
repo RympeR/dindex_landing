@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     'corsheaders',
 
     'apps.landing',
@@ -78,6 +78,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'dindex.wsgi.application'
 ASGI_APPLICATION = 'dindex.asgi.application'
 
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -88,6 +89,13 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+PLOTLY_COMPONENTS = [
+    'dash_core_components',
+    'dash_html_components',
+    'dash_renderer',
+    'dpd_components',
+]
 
 
 # Password validation
