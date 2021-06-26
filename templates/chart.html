@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <div class="">dude</div>
+    <script>
+        function timeConverter(UNIX_timestamp){
+            let a = new Date(UNIX_timestamp);
+            let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            let year = a.getFullYear();
+            let month = months[a.getMonth()];
+            let date = a.getDate();
+            let hour = a.getHours();
+            let min = a.getMinutes();
+            let sec = a.getSeconds();
+            let time = date + ' ' + month + ' ' + year ;
+            return time;
+        }
+        async function get_table_data(){
+            var myHeaders = new Headers();
+            var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+            };
+
+            const response = await fetch("https://dindex.site/index/index/getValues", requestOptions)
+            let data = await response.text();
+            data = JSON.parse(data);
+            console.log(data)
+        }
+        async function get_chart_data() {
+            let myHeaders = new Headers();
+            let requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+            const response = await fetch("https://dindex.site/index/index/get_weekly_stats?offset=0", requestOptions)
+            let data = await response.text();
+            data = JSON.parse(data);
+            console.log(data)
+            let xlabels = [],
+                ylabels = [];
+            data.map((element, index) => {
+                // if (index % 8 == 0){
+                    xlabels.push(timeConverter(element[0]))
+                    ylabels.push(element[1])
+                // }
+            });
+            return { xlabels, ylabels };
+        }
+
+        async function draw_chart() {
+            const data = await get_chart_data();
+            const table_data = await get_table_data();
+            let ctx = document.getElementById('myChart').getContext('2d');
+            let delayed;
+            let myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.xlabels,
+                    datasets: [{
+                        label: 'I30',
+                        data: data.ylabels,
+                        backgroundColor: 'rgba(194, 228, 201 , 1)',
+                        borderColor:'rgba(72, 178, 94, 1)',
+                        pointRadius:0,
+                        borderWidth: 1,
+                        fill:true
+                    }]
+                },
+                options: {
+                    animation: {
+                        onComplete: () => {
+                            delayed = true;
+                        },
+                        delay: (context) => {
+                            let delay = 0;
+                            if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                                delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                            }
+                            return delay;
+                        },
+                    },
+                    scales: {
+                        y: {
+                            stacked: true,
+                            beginAtZero: false,
+                            display: true,
+                            text: 'Value'
+                        },
+                        x: {
+                            stacked: true,
+                            beginAtZero: false,
+                            display: true,
+                            text: 'Time'
+                        },
+                    }
+                }
+            });
+        }
+        draw_chart();
+
+    </script>
+</body>
+
+</html>
