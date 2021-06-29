@@ -295,44 +295,28 @@
 						<div class="table">
 							<table>
 								<tr>
-									<th>Data</th>
-									<th>Id</th>
 									<th>Currency</th>
-									<th>Title</th>
 									<th>Weight</th>
-									<th>Last buy</th>
-									<th>Current buy</th>
-									<th>Price</th>
-									<th>Buy sum</th>
-									<th>Cap</th>
+									<th>Currency</th>
+									<th>Weight</th>
+									<th>Currency</th>
+									<th>Weight</th>
 								</tr>
-								{% for row in data %}
+								{% for row0, row1, row2 in data %}
 								<tr>
-									<td>{{ row.value_date }}</td>
-									<td>{{ row.id }}</td>
-									<td>{{ row.currency }}</td>
-									<td>{{ row.title }}</td>
-									<td>{{ row.weight }}</td>
-									<td>{{ row.last_buy }}</td>
-									<td>{{ row.current_buy }}</td>
-									<td>{{ row.price }}</td>
-									<td>{{ row.buy_sum }}</td>
-									<td>{{ row.cap }}</td>
+
+									<td>{{ row0.currency }}</td>
+									<td>{{ row0.weight }}</td>
+									<td>{{ row1.currency }}</td>
+									<td>{{ row1.weight }}</td>
+									<td>{{ row2.currency }}</td>
+									<td>{{ row2.weight }}</td>
+
 								</tr>
 								{% endfor %}
 							</table>
 						</div>
-						{% if pages > 0 %}
-						<ul class="pagination">
-              {% for i in pages|get_range %} 
-              {% if current_page == i %}
-							<li class="active"><span>{{ i }}</span></li>
-							{% else %}
-							<li><a href="?page={{ i }}">{{ i }}</a></li>
-							{% endif %} 
-              {% endfor %}
-						</ul>
-						{% endif %}
+
 					</div>
 					
 				</div>

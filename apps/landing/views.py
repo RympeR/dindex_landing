@@ -3,7 +3,7 @@ import requests
 from django.core.paginator import Paginator
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.defaulttags import register
-
+import numpy as np
 from plotly.offline import plot
 import plotly.graph_objects as go
 
@@ -39,6 +39,10 @@ def index(request):
     data = data.json()['data']
     # keys = list(filter(lambda x: int(x.split("-")[0])>=2019 ,list(data.keys())))
     keys = list(data.keys())
-    data = data[keys[page-1]]
-    context = {'data':data, 'pages': len(keys), 'current_page': page, 'plot' : scatter()}
+    # data = sorted(data[keys[ -1]], key=lambda x: float(x['weight']))
+    data = data[keys[-1]]
+    print(len(data))
+    data = sorted(data, key=lambda x: float(x['weight']))
+    data = np.array_split(data, 10) 
+    context = {'data':data, 'pages': len(keys), 'current_page': page, 'plot' : scatter(), 'zip': zip}
     return render(request, 'index.html', context=context)
