@@ -42,7 +42,7 @@ def index(request):
     # data = sorted(data[keys[ -1]], key=lambda x: float(x['weight']))
     data = data[keys[-1]]
     print(len(data))
-    data = sorted(data, key=lambda x: float(x['weight']))
+    data = sorted(data, key=lambda x: float(x['weight']))[::-1]
     data = np.array_split(data, 10) 
     context = {'data':data, 'pages': len(keys), 'current_page': page, 'plot' : scatter(), 'zip': zip}
     return render(request, 'index.html', context=context)
